@@ -87,6 +87,9 @@ export default function App() {
           ],
         },
       ],
+      // Note: In a production environment, it is recommended to avoid calling Daily's API endpoint directly.
+      // Instead, you should route requests through your own server to handle authentication, validation,
+      // and any other necessary logic. Therefore, the baseUrl should be set to the URL of your own server.
       customHeaders: {
         "Authorization": `Bearer ${process.env.EXPO_PUBLIC_DAILY_API_KEY}`
       },
