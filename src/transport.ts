@@ -15,13 +15,13 @@ import {
   TransportStartError,
   VoiceMessage,
   VoiceMessageMetrics,
-  MediaDeviceInfo,
   Participant,
   PipecatMetrics,
   Tracks,
   TransportState,
   VoiceClientOptions,
 } from "realtime-ai";
+import { MediaDeviceInfo } from '@daily-co/react-native-webrtc';
 
 export interface DailyTransportAuthBundle {
   room_url: string;
@@ -152,14 +152,14 @@ export class RNDailyTransport extends Transport {
     const cams = devices.filter((d) => d.kind === "videoinput");
     const mics = devices.filter((d) => d.kind === "audio");
 
-    this._callbacks.onAvailableCamsUpdated?.(cams as MediaDeviceInfo[]);
-    this._callbacks.onAvailableMicsUpdated?.(mics as MediaDeviceInfo[]);
+    this._callbacks.onAvailableCamsUpdated?.(cams);
+    this._callbacks.onAvailableMicsUpdated?.(mics);
 
     let inputDevices = await this._daily.getInputDevices()
-    this._selectedCam = inputDevices.camera as MediaDeviceInfo;
-    this._callbacks.onCamUpdated?.(this._selectedCam);
-    this._selectedMic = inputDevices.mic as MediaDeviceInfo;
-    this._callbacks.onMicUpdated?.(this._selectedMic);
+    this._selectedCam = inputDevices.camera;
+    this._callbacks.onCamUpdated?.(this._selectedCam as MediaDeviceInfo);
+    this._selectedMic = inputDevices.mic;
+    this._callbacks.onMicUpdated?.(this._selectedMic as MediaDeviceInfo);
 
     // Instantiate audio observers
     if (!this._daily.isLocalAudioLevelObserverRunning())
@@ -280,10 +280,10 @@ export class RNDailyTransport extends Transport {
   ) {
     console.log("handleAvailableDevicesUpdated", ev)
     this._callbacks.onAvailableCamsUpdated?.(
-      ev.availableDevices.filter((d) => d.kind === "videoinput") as MediaDeviceInfo[]
+      ev.availableDevices.filter((d) => d.kind === "videoinput")
     );
     this._callbacks.onAvailableMicsUpdated?.(
-      ev.availableDevices.filter((d) => d.kind === "audio") as MediaDeviceInfo[]
+      ev.availableDevices.filter((d) => d.kind === "audio")
     );
   }
 

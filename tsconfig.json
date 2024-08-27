@@ -2,7 +2,8 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-realtime-ai-daily": ["./src/index"]
+      "react-native-realtime-ai-daily": ["./src/index"],
+      "realtime-ai": ["./src/types/realtime-ai/typeOverrides"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

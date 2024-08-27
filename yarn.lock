@@ -5280,8 +5280,10 @@ readable-stream@~2.3.6:
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
-"realtime-ai@file:../../rtvi-client-web/rtvi-client-js":
-  version "0.1.5"
+realtime-ai@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/realtime-ai/-/realtime-ai-0.1.6.tgz#c573bc65f3be98ede0760933b454e88bcb3db7d1"
+  integrity sha512-QfhH55mc3fn1M8pWZUSdCBMpXXN11fwk7OFP9az931dPk7wINVWlf7h5mxGeeZgj4e/9e9v8PttTISWcQad3KQ==
   dependencies:
     "@types/events" "^3.0.3"
     deepmerge-ts "^7.0.3"
