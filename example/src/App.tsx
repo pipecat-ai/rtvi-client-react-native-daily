@@ -43,11 +43,9 @@ const styles = StyleSheet.create({
   },
 })
 
-const ROOM_URL_TEMPLATE = process.env.EXPO_PUBLIC_BASE_URL
-
 export default function App() {
 
-  const [roomUrl, setRoomUrl] = useState<String>(ROOM_URL_TEMPLATE)
+  const [roomUrl, setRoomUrl] = useState<String>(process.env.EXPO_PUBLIC_BASE_URL)
 
   const [voiceClient, setVoiceClient] = useState<DailyVoiceClient|undefined>()
 
