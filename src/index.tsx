@@ -1,5 +1,3 @@
-
-
 import { VoiceClient, VoiceClientOptions } from 'realtime-ai';
 import { RNDailyTransport } from "./transport";
 
