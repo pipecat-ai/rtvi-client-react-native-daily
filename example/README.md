@@ -1,4 +1,4 @@
-# react-native-rtvi-sandbox
+# react-native-realtime-ai-daily-example
 
 ## Usage
 
@@ -6,7 +6,7 @@
 
 This project cannot be used with an [Expo Go](https://docs.expo.dev/workflow/expo-go/) app because [it requires custom native code](https://docs.expo.io/workflow/customizing/).
 
-When a project requires custom native code or a config plugin, we need to transition from using [Expo Go](https://docs.expo.dev/workflow/expo-go/) 
+When a project requires custom native code or a config plugin, we need to transition from using [Expo Go](https://docs.expo.dev/workflow/expo-go/)
 to a [development build](https://docs.expo.dev/development/introduction/).
 
 More details about the custom native code used by this demo can be found in [rn-daily-js-expo-config-plugin](https://github.com/daily-co/rn-daily-js-expo-config-plugin).
@@ -63,8 +63,8 @@ Once an account is added, perform the following steps:
  1. Select `dailyexpodemo` from the side panel
  1. Navigate to `Signing & Capabilities` in the top nav bar.
  1. Open the "Team" dropdown
- 1. Select the account added in the previous step. 
- 
+ 1. Select the account added in the previous step.
+
 The "Signing Certificate" section should update accordingly with your account information.
 
 ![xcode-signing.png](./docsAssets/xcode-signing.png)
