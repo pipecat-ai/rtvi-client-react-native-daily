@@ -7,7 +7,7 @@ import {
   TextInput,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { RNDailyVoiceClient } from 'react-native-realtime-ai-daily';
+import { DailyVoiceClient } from 'react-native-realtime-ai-daily';
 
 // TODO: improve the demo so we can record a first version of it working
 
@@ -54,7 +54,7 @@ const ROOM_URL_TEMPLATE = process.env.EXPO_PUBLIC_BASE_URL;
 
 export default function App() {
   const [roomUrl, setRoomUrl] = useState<String>(ROOM_URL_TEMPLATE);
-  const [voiceClient, setVoiceClient] = useState<RNDailyVoiceClient|undefined>();
+  const [voiceClient, setVoiceClient] = useState<DailyVoiceClient|undefined>();
 
   const start = async () => {
     console.log("Starting the bot");
@@ -82,7 +82,7 @@ export default function App() {
 
   // Create the VoiceClient
   useEffect(() => {
-    let voiceClient = new RNDailyVoiceClient({
+    let voiceClient = new DailyVoiceClient({
       baseUrl: process.env.EXPO_PUBLIC_BASE_URL,
       enableMic: true,
       services: {

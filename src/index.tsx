@@ -6,11 +6,16 @@ import { RNDailyTransport } from "./transport";
 /**
  * Daily RTVI Voice Client for React Native
  */
-export class RNDailyVoiceClient extends VoiceClient{
+export class DailyVoiceClient extends VoiceClient {
+  constructor({ ...opts }: VoiceClientOptions) {
+    const options: VoiceClientOptions = {
+      ...opts,
+      transport: RNDailyTransport,
+      services: opts.services,
+      config: opts.config || [],
+    };
 
-  constructor(options: VoiceClientOptions) {
-    options.transport = RNDailyTransport
-    super(options)
+    super(options);
   }
 }
 

@@ -116,7 +116,7 @@
     ]
   },
   "dependencies": {
-    "realtime-ai": "file:../../rtvi-client-web/rtvi-client-js"
+    "realtime-ai": "file:../rtvi-client-web/rtvi-client-js"
   },
   "peerDependencies": {
     "@daily-co/react-native-webrtc": "^118.0.3-daily.2",
