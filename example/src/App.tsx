@@ -5,11 +5,12 @@ import {
   Text,
   Button,
   TextInput,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { DailyVoiceClient } from 'react-native-realtime-ai-daily';
+} from "react-native"
 
-// TODO: improve the demo so we can record a first version of it working
+import React, { useEffect, useState } from "react"
+
+import { DailyVoiceClient } from 'react-native-realtime-ai-daily'
+import { TransportState } from 'realtime-ai';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -17,19 +18,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#f7f9fa",
     width: "100%",
   },
-  outCallContainer: {
+  mainContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  inCallContainer: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-  },
-  dailyMediaView: {
-    flex: 1,
-    aspectRatio: 9 / 16,
+    padding: 20
   },
   roomUrlInput: {
     borderRadius: 8,
@@ -40,50 +33,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: "100%",
   },
-  infoView: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  controlButton: {
-    flex: 1,
-  },
-});
+})
 
-const ROOM_URL_TEMPLATE = process.env.EXPO_PUBLIC_BASE_URL;
+const ROOM_URL_TEMPLATE = process.env.EXPO_PUBLIC_BASE_URL
 
 export default function App() {
-  const [roomUrl, setRoomUrl] = useState<String>(ROOM_URL_TEMPLATE);
-  const [voiceClient, setVoiceClient] = useState<DailyVoiceClient|undefined>();
 
-  const start = async () => {
-    console.log("Starting the bot");
-    try {
-      await voiceClient?.start()
-    } catch (e) {
-      console.log("Failed to join the call", e)
-    }
-  };
+  const [roomUrl, setRoomUrl] = useState<String>(ROOM_URL_TEMPLATE)
 
-  //Add the listeners
-  useEffect(() => {
-    if (!voiceClient) {
-      return;
-    }
-    voiceClient
-      .on("transportStateChanged", (state) => {
-        console.log("New state", state)
-      })
-      .on("error", (error) => {
-        console.log("error", error)
-      })
-    return () => {};
-  }, [voiceClient]);
+  const [voiceClient, setVoiceClient] = useState<DailyVoiceClient|undefined>()
 
-  // Create the VoiceClient
-  useEffect(() => {
+  const [inCall, setInCall] = useState<boolean>(false)
+  const [currentState, setCurrentState] = useState<TransportState>("idle")
+
+  const createVoiceClient = () => {
     let voiceClient = new DailyVoiceClient({
-      baseUrl: process.env.EXPO_PUBLIC_BASE_URL,
+      baseUrl: roomUrl,
       enableMic: true,
       services: {
         llm: "together",
@@ -115,7 +80,7 @@ export default function App() {
         },
       ],
       customHeaders: {
-          "Authorization": `Bearer ${process.env.EXPO_PUBLIC_DAILY_API_KEY}`
+        "Authorization": `Bearer ${process.env.EXPO_PUBLIC_DAILY_API_KEY}`
       },
       customBodyParams: {
         "bot_profile": "voice_2024_08",
@@ -124,30 +89,74 @@ export default function App() {
       timeout: 15 * 1000,
       enableCam: false,
     })
-    console.log("Initializing, VoiceClient")
-    setVoiceClient(voiceClient)
-    return () => {};
-  }, []);
+    return voiceClient
+  }
+
+  const start = async () => {
+    try {
+      let voiceClient = createVoiceClient()
+      setVoiceClient(voiceClient)
+      await voiceClient?.start()
+    } catch (e) {
+      console.log("Failed to start the bot", e)
+    }
+  }
+
+  const leave = async () => {
+    try {
+      if (voiceClient) {
+        await voiceClient.disconnect()
+        setCurrentState(voiceClient.state)
+        setVoiceClient(undefined)
+      }
+    } catch (e) {
+      console.log("Failed to disconnect", e)
+    }
+  }
+
+  //Add the listeners
+  useEffect(() => {
+    if (!voiceClient) {
+      return
+    }
+    voiceClient
+      .on("transportStateChanged", (state) => {
+        setCurrentState(voiceClient.state)
+        const inCallStates = ["authenticating", "connecting", "connected", "ready"];
+        setInCall(inCallStates.includes(state))
+      })
+      .on("error", (error) => {
+        console.log("error", error)
+      })
+    return () => {}
+  }, [voiceClient])
 
   return (
     <SafeAreaView style={styles.safeArea}>
-        <View style={styles.outCallContainer}>
-          <View style={styles.infoView}>
-            <Text>Not in a call yet</Text>
-            <TextInput
-              style={styles.roomUrlInput}
-              value={roomUrl}
-              onChangeText={(newRoomURL) => {
-                setRoomUrl(newRoomURL);
-              }}
-            />
-            <Button
-              style={styles.controlButton}
-              onPress={() => start()}
-              title="Start"
-            ></Button>
-          </View>
+      {inCall ? (
+        <View style={styles.mainContainer}>
+          <Text>{currentState}</Text>
+          <Button
+            onPress={() => leave()}
+            title="Disconnect"
+          ></Button>
         </View>
+        ) : (
+        <View style={styles.mainContainer}>
+          <Text>Not in a call yet</Text>
+          <TextInput
+            style={styles.roomUrlInput}
+            value={roomUrl}
+            onChangeText={(newRoomURL) => {
+              setRoomUrl(newRoomURL)
+            }}
+          />
+          <Button
+            onPress={() => start()}
+            title="Start"
+          ></Button>
+        </View>
+      )}
     </SafeAreaView>
-  );
+  )
 }
