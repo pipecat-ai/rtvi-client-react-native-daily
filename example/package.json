@@ -28,5 +28,8 @@
     "@babel/core": "^7.20.0",
     "react-native-builder-bob": "^0.30.0"
   },
-  "private": true
+  "private": true,
+  "resolutions": {
+    "@daily-co/react-native-webrtc/debug": "^4.0.0"
+  }
 }
