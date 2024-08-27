@@ -122,7 +122,7 @@ export class RNDailyTransport extends Transport {
     const participants = this._daily?.participants();
     const bot = participants?.[this._botId];
 
-    /*const tracks: Tracks = {
+    const tracks: Tracks = {
       local: {
         audio: participants?.local?.tracks?.audio?.persistentTrack,
         video: participants?.local?.tracks?.video?.persistentTrack,
@@ -134,11 +134,7 @@ export class RNDailyTransport extends Transport {
         audio: bot?.tracks?.audio?.persistentTrack,
         video: bot?.tracks?.video?.persistentTrack,
       };
-    }*/
-
-    // TODO implement it
-    console.log("Bot id", bot)
-    const tracks: Tracks = { local: {} }
+    }
 
     return tracks;
   }
@@ -302,21 +298,17 @@ export class RNDailyTransport extends Transport {
   }*/
 
   private handleTrackStarted(ev: DailyEventObjectTrack) {
-    console.log("Need to handleTrackStarted", ev)
-    // TODO implement it
-    /*this._callbacks.onTrackStarted?.(
+    this._callbacks.onTrackStarted?.(
       ev.track,
       ev.participant ? dailyParticipantToParticipant(ev.participant) : undefined
-    );*/
+    );
   }
 
   private handleTrackStopped(ev: DailyEventObjectTrack) {
-    console.log("Need to handleTrackStopped", ev)
-    // TODO implement it
-    /*this._callbacks.onTrackStopped?.(
+    this._callbacks.onTrackStopped?.(
       ev.track,
       ev.participant ? dailyParticipantToParticipant(ev.participant) : undefined
-    );*/
+    );
   }
 
   private handleParticipantJoined(ev: DailyEventObjectParticipant) {
