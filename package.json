@@ -39,13 +39,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rtvi-ai/react-native-realtime-ai-daily.git"
+    "url": "git+https://github.com/rtvi-ai/rtvi-client-react-native-daily.git"
   },
   "author": "Filipi Fuchter <filipi@daily.co> (https://github.com/rtvi-ai)",
   "bugs": {
-    "url": "https://github.com/rtvi-ai/react-native-realtime-ai-daily/issues"
+    "url": "https://github.com/rtvi-ai/rtvi-client-react-native-daily/issues"
   },
-  "homepage": "https://github.com/rtvi-ai/react-native-realtime-ai-daily#readme",
+  "homepage": "https://github.com/rtvi-ai/rtvi-client-react-native-daily#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
