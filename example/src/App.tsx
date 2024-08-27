@@ -24,7 +24,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20
   },
-  roomUrlInput: {
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  text: {
+    color: '#333',
+  },
+  baseUrlInput: {
     borderRadius: 8,
     marginVertical: 8,
     padding: 12,
@@ -135,17 +143,20 @@ export default function App() {
     <SafeAreaView style={styles.safeArea}>
       {inCall ? (
         <View style={styles.mainContainer}>
-          <Text>{currentState}</Text>
+          <Text style={styles.title}>RTVI session state:</Text>
+          <Text style={styles.text}>{currentState}</Text>
           <Button
             onPress={() => leave()}
+            color="#FF0000" // Red color
             title="Disconnect"
           ></Button>
         </View>
         ) : (
         <View style={styles.mainContainer}>
-          <Text>Not in a call yet</Text>
+          <Text style={styles.title}>Connect to an RTVI server</Text>
+          <Text style={styles.text}>Backend URL</Text>
           <TextInput
-            style={styles.roomUrlInput}
+            style={styles.baseUrlInput}
             value={roomUrl}
             onChangeText={(newRoomURL) => {
               setRoomUrl(newRoomURL)
@@ -153,7 +164,7 @@ export default function App() {
           />
           <Button
             onPress={() => start()}
-            title="Start"
+            title="Connect"
           ></Button>
         </View>
       )}
