@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 
 export default function App() {
 
-  const [roomUrl, setRoomUrl] = useState<String>(process.env.EXPO_PUBLIC_BASE_URL)
+  const [roomUrl, setRoomUrl] = useState<string>(process.env.EXPO_PUBLIC_BASE_URL || '')
 
   const [voiceClient, setVoiceClient] = useState<DailyVoiceClient|undefined>()
 
