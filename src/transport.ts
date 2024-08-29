@@ -223,11 +223,12 @@ export class RNDailyTransport extends Transport {
       this.handleAvailableDevicesUpdated.bind(this)
     );
 
-    // TODO need to replace this for the right method on RN, not sure if we have one
-    /*this._daily.on(
+    this._daily.on(
+      // TODO, we need to add DailyEventObjectSelectedDevicesUpdated to types overrides inside react-ntive-daily-js
+      // @ts-ignore
       "selected-devices-updated",
       this.handleSelectedDevicesUpdated.bind(this)
-    );*/
+    );
 
     this._daily.on("track-started", this.handleTrackStarted.bind(this));
     this._daily.on("track-stopped", this.handleTrackStopped.bind(this));
@@ -284,8 +285,9 @@ export class RNDailyTransport extends Transport {
     );
   }
 
-  // TODO need to replace this for the right method on RN, not sure if we have one
-  /*private handleSelectedDevicesUpdated(
+  // TODO, we need to add DailyEventObjectSelectedDevicesUpdated to types overrides inside react-ntive-daily-js
+  private handleSelectedDevicesUpdated(
+    // @ts-ignore
     ev: DailyEventObjectSelectedDevicesUpdated
   ) {
     if (this._selectedCam?.deviceId !== ev.devices.camera) {
@@ -296,7 +298,7 @@ export class RNDailyTransport extends Transport {
       this._selectedMic = ev.devices.mic;
       this._callbacks.onMicUpdated?.(ev.devices.mic as MediaDeviceInfo);
     }
-  }*/
+  }
 
   private handleTrackStarted(ev: DailyEventObjectTrack) {
     this._callbacks.onTrackStarted?.(
