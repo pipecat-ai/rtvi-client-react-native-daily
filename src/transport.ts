@@ -276,7 +276,6 @@ export class RNDailyTransport extends Transport {
   private handleAvailableDevicesUpdated(
     ev: DailyEventObjectAvailableDevicesUpdated
   ) {
-    console.log("handleAvailableDevicesUpdated", ev)
     this._callbacks.onAvailableCamsUpdated?.(
       ev.availableDevices.filter((d) => d.kind === "videoinput")
     );
