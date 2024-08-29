@@ -1,5 +1,6 @@
 import { VoiceClient, VoiceClientOptions } from 'realtime-ai';
 import { RNDailyTransport } from "./transport";
+import VoiceClientVideoView from './view/VoiceClientVideoView';
 
 /**
  * Daily RTVI Voice Client for React Native
@@ -16,4 +17,6 @@ export class DailyVoiceClient extends VoiceClient {
     super(options);
   }
 }
+
+export { VoiceClientVideoView }
 
