@@ -178,8 +178,6 @@ export class RNDailyTransport extends Transport {
 
     this.state = "connecting";
 
-    console.log("Will connect", authBundle)
-
     try {
       await this._daily.join({
         url: authBundle.room_url,
