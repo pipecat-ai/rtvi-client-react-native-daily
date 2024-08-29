@@ -366,6 +366,11 @@ export class RNDailyTransport extends Transport {
     this._botId = "";
     this._callbacks.onDisconnected?.();
   }
+
+  get expiry(): number | undefined {
+    return this._expiry
+  };
+
 }
 
 const dailyParticipantToParticipant = (p: DailyParticipant): Participant => ({
