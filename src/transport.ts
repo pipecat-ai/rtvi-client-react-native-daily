@@ -45,10 +45,13 @@ export class RNDailyTransport extends Transport {
     if (existingInstance) {
       void existingInstance.destroy();
     }
+
+    let startVideoOff = !(options.enableCam == true)
+    let startAudioOff = options.enableMic == false
     this._daily = Daily.createCallObject({
-      videoSource: options.enableCam ?? false,
-      audioSource: options.enableMic ?? false,
       allowMultipleCallInstances: true,
+      startVideoOff: startVideoOff,
+      startAudioOff: startAudioOff,
       dailyConfig: {},
     });
 
