@@ -1,28 +1,16 @@
 {
   "name": "react-native-realtime-ai-daily",
-  "version": "0.1.0",
+  "version": "0.1.5",
+  "license": "BSD-2-Clause",
   "description": "React Native library for connecting to RTVI client using Daily",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
   "types": "./lib/typescript/module/src/index.d.ts",
   "files": [
-    "src",
     "lib",
-    "android",
-    "ios",
-    "cpp",
-    "*.podspec",
-    "!ios/build",
-    "!android/build",
-    "!android/gradle",
-    "!android/gradlew",
-    "!android/gradlew.bat",
-    "!android/local.properties",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__",
-    "!**/.*"
+    "package.json",
+    "README.md"
   ],
   "scripts": {
     "test": "jest",
@@ -30,7 +18,9 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli lib",
     "prepare": "bob build",
-    "build": "bob build"
+    "build": "bob build",
+    "tag": "scripts/tag",
+    "prepublishOnly": "npm run tag"
   },
   "keywords": [
     "react-native",
