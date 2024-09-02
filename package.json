@@ -1,6 +1,6 @@
 {
   "name": "react-native-realtime-ai-daily",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "license": "BSD-2-Clause",
   "description": "React Native library for connecting to RTVI client using Daily",
   "source": "./src/index.tsx",
@@ -105,7 +105,7 @@
     ]
   },
   "dependencies": {
-    "realtime-ai": "^0.1.6"
+    "realtime-ai": "^0.1.7"
   },
   "peerDependencies": {
     "@daily-co/react-native-webrtc": "^118.0.3-daily.2",
