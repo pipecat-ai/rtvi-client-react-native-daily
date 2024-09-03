@@ -62,7 +62,7 @@ export class RNDailyTransport extends Transport {
     return this._state;
   }
 
-  set state(state: TransportState) {
+  private set state(state: TransportState) {
     if (this._state === state) return;
 
     this._state = state;
@@ -192,7 +192,6 @@ export class RNDailyTransport extends Transport {
         this._expiry = room.config.exp;
       }
     } catch (e) {
-      console.log("connect error", e)
       this.state = "error";
       throw new TransportStartError();
     }

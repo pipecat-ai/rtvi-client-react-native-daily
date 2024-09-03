@@ -221,13 +221,6 @@ export abstract class Client extends Client_base {
    */
   get config(): VoiceClientConfigOption[];
   /**
-   * Set new configuration parameters.
-   * Note: this does nothing if the transport is connectd. Use updateConfig method instead
-   * @param config - VoiceClientConfigOption[] partial object with the new configuration
-   * @returns VoiceClientConfigOption[] - Updated configuration
-   */
-  set config(config: VoiceClientConfigOption[]);
-  /**
    * Request the bot to send its current configuration
    * @returns Promise<unknown> - Promise that resolves with the bot's configuration
    */
@@ -235,9 +228,10 @@ export abstract class Client extends Client_base {
   /**
    * Update pipeline and services
    * @param config - VoiceClientConfigOption[] partial object with the new configuration
+     * @param interrupt - boolean flag to interrupt the current pipeline, or wait until the next turn
    * @returns Promise<unknown> - Promise that resolves with the updated configuration
    */
-  updateConfig(config: VoiceClientConfigOption[]): Promise<unknown>;
+    updateConfig(config: VoiceClientConfigOption[], interrupt?: boolean): Promise<unknown>;
   /**
    * Request bot describe the current configuration options
    * @returns Promise<unknown> - Promise that resolves with the bot's configuration description
@@ -246,16 +240,37 @@ export abstract class Client extends Client_base {
   /**
    * Returns configuration options for specified service key
    * @param serviceKey - Service name to get options for (e.g. "llm")
-   * @returns VoiceClientConfigOption - Configuration options for the service
+     * @returns VoiceClientConfigOption - Configuration options array for the service with specified key
+     */
+    getServiceOptionsFromConfig(serviceKey: string): VoiceClientConfigOption | undefined;
+    /**
+     * Returns configuration option value (unknown) for specified service key and option name
+     * @param serviceKey - Service name to get options for (e.g. "llm")
+     * @optional option Name of option return from the config (e.g. "model")
+     * @returns unknown - Service configuration option value
    */
-  getServiceOptionsFromConfig(serviceKey: string): VoiceClientConfigOption;
+    getServiceOptionValueFromConfig(serviceKey: string, option: string): unknown | undefined;
   /**
-   * Returns mutated / merged config for specified key and service config option
+     * Returns config with updated option(s) for specified service key and option name
+     * Note: does not update current config, only returns a new object (call updateConfig to apply changes)
    * @param serviceKey - Service name to get options for (e.g. "llm")
-   * @param option - Service name to get options for (e.g. "llm")
+     * @param option - Service name to get options for (e.g. "model")
+     * @param config? - Optional VoiceClientConfigOption[] to update (vs. using current config)
+     * @returns VoiceClientConfigOption[] - Configuration options
+     */
+    setServiceOptionInConfig(serviceKey: string, option: ConfigOption | ConfigOption[], config?: VoiceClientConfigOption[]): VoiceClientConfigOption[];
+    /**
+     * Returns config object with update properties from passed array
+     * @param configOptions - Array of VoiceClientConfigOption[] to update
+     * @param config? - Optional VoiceClientConfigOption[] to update (vs. using current config)
    * @returns VoiceClientConfigOption[] - Configuration options
    */
-  setServiceOptionInConfig(serviceKey: string, option: ConfigOption): VoiceClientConfigOption[];
+    setConfigOptions(configOptions: VoiceClientConfigOption[], config?: VoiceClientConfigOption[]): VoiceClientConfigOption[];
+    /**
+     * Returns a full config array by merging partial config with existing config
+     * @param config - Service name to get options for (e.g. "llm")
+     * @returns VoiceClientConfigOption[] - Configuration options
+     */
   partialToConfig(config: VoiceClientConfigOption[]): VoiceClientConfigOption[];
   /**
    * Dispatch an action message to the bot
@@ -414,10 +429,10 @@ export class LLMHelper extends VoiceClientHelper {
   constructor(options: LLMHelperOptions);
   getMessageTypes(): string[];
   /**
-   * Bot's current LLM context. Bot must be in the ready state.
-   * @returns Promise<unknown> | void
+     * Bot's current LLM context.
+     * @returns Promise<LLMContextMessage[]>
    */
-  getContext(): Promise<unknown> | void;
+    getContext(): Promise<LLMContextMessage[]>;
   /**
    * Update the bot's LLM context.
    * If this is called while the transport is not in the ready state, the local context will be updated
@@ -425,7 +440,7 @@ export class LLMHelper extends VoiceClientHelper {
    * @param interrupt boolean - Whether to interrupt the bot, or wait until it has finished speaking
    * @returns Promise<unknown>
    */
-  setContext(context: LLMContext, interrupt?: boolean): Promise<unknown>;
+    setContext(context: LLMContext, interrupt?: boolean): Promise<VoiceClientConfigOption[]>;
   /**
    * Append a new message to the LLM context.
    * If this is called while the transport is not in the ready state, the local context will be updated
@@ -433,7 +448,7 @@ export class LLMHelper extends VoiceClientHelper {
    * @param runImmediately boolean - wait until pipeline is idle before running
    * @returns
    */
-  appendToMessages(context: LLMContextMessage, runImmediately?: boolean): Promise<unknown>;
+    appendToMessages(context: LLMContextMessage, runImmediately?: boolean): Promise<VoiceClientConfigOption[]>;
   /**
    * Run the bot's current LLM context.
    * Useful when appending messages to the context without runImmediately set to true.
@@ -530,4 +545,3 @@ export class VoiceClient extends Client {
 }
 
 //# sourceMappingURL=index.d.ts.map
-
