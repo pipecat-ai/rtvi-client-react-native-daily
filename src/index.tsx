@@ -1,22 +1,19 @@
-import { VoiceClient, VoiceClientOptions } from 'realtime-ai';
+import { RTVIClient, RTVIClientOptions } from 'realtime-ai';
 import { RNDailyTransport } from "./transport";
 import VoiceClientVideoView from './view/VoiceClientVideoView';
 
 /**
  * Daily RTVI Voice Client for React Native
  */
-export class DailyVoiceClient extends VoiceClient {
-  constructor({ ...opts }: VoiceClientOptions) {
-    const options: VoiceClientOptions = {
+export class DailyVoiceClient extends RTVIClient {
+  constructor({ ...opts }: RTVIClientOptions) {
+    const options: RTVIClientOptions = {
       ...opts,
-      transport: RNDailyTransport,
-      services: opts.services,
-      config: opts.config || [],
+      transport: new RNDailyTransport(),
     };
-
     super(options);
   }
 }
 
-export { VoiceClientVideoView }
+export { VoiceClientVideoView, RNDailyTransport }
 
