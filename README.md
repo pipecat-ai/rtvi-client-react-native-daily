@@ -39,40 +39,48 @@ A full demo can be found [here](https://github.com/daily-demos/daily-bots-react-
 Instantiate a `VoiceClient` instance, wire up the bot's audio, and start the conversation:
 
 ```typescript
-let voiceClient = new DailyVoiceClient({
-  baseUrl: baseUrl,
-  enableMic: true,
-  services: {
-    llm: "together",
-    tts: "cartesia",
+let voiceClient = new RTVIClient({
+  transport: new RNDailyTransport(),
+  params: {
+    baseUrl: url,
+    config: [
+      {
+        service: "tts",
+        options: [
+          { name: "voice", value: "79a125e8-cd45-4c13-8a67-188112f4dd22" },
+        ],
+      },
+      {
+        service: "llm",
+        options: [
+          { name: "model", value: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo" },
+          {
+            name: "initial_messages",
+            value: [
+              {
+                role: "system",
+                content:
+                  "You are a assistant called ExampleBot. You can ask me anything. Keep responses brief and legible. Your responses will converted to audio. Please do not include any special characters in your response other than '!' or '?'. Start by briefly introducing yourself.",
+              },
+            ],
+          },
+          { name: "run_on_config", value: true },
+        ],
+      },
+    ],
+    requestData: {
+      services: {
+        llm: "together",
+        tts: "cartesia",
+      },
+    },
+    endpoints: {
+      connect: "/start",
+      action: "/action"
+    }
   },
-  config: [
-    {
-      service: "tts",
-      options: [
-        { name: "voice", value: "79a125e8-cd45-4c13-8a67-188112f4dd22" },
-      ],
-    },
-    {
-      service: "llm",
-      options: [
-        { name: "model", value: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo" },
-        {
-          name: "initial_messages",
-          value: [
-            {
-              role: "system",
-              content:
-                "You are a assistant called Frankie. You can ask me anything. Keep responses brief and legible. Introduce yourself first.",
-            },
-          ],
-        },
-        { name: "run_on_config", value: true },
-      ],
-    },
-  ],
-  timeout: 15 * 1000,
-  enableCam: false,
+  enableMic: true,
+  enableCam: false
 })
 
 await voiceClient.start()

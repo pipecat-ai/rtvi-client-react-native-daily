@@ -11,15 +11,14 @@ import Daily, {
 } from '@daily-co/react-native-daily-js';
 
 import {
+  Participant,
+  Tracks,
   Transport,
   TransportStartError,
-  VoiceMessage,
-  VoiceMessageMetrics,
-  Participant,
-  PipecatMetrics,
-  Tracks,
   TransportState,
-  VoiceClientOptions,
+  RTVIClientOptions,
+  RTVIMessage,
+  RTVIError,
 } from "realtime-ai";
 import { MediaDeviceInfo } from '@daily-co/react-native-webrtc';
 
@@ -29,33 +28,41 @@ export interface DailyTransportAuthBundle {
 }
 
 export class RNDailyTransport extends Transport {
-  private _daily: DailyCall;
+  // Not able to use declare fields here
+  // opened issue: https://github.com/facebook/create-react-app/issues/8918
+  private _daily: DailyCall | undefined;
   private _botId: string = "";
-
   private _selectedCam: MediaDeviceInfo | Record<string, never> = {};
   private _selectedMic: MediaDeviceInfo | Record<string, never> = {};
 
-  constructor(
-    options: VoiceClientOptions,
-    onMessage: (ev: VoiceMessage) => void
-  ) {
-    super(options, onMessage);
+  constructor() {
+    super();
+  }
+
+  public initialize(
+    options: RTVIClientOptions,
+    messageHandler: (ev: RTVIMessage) => void
+  ): void {
+    this._callbacks = options.callbacks ?? {};
+    this._onMessage = messageHandler;
 
     const existingInstance = Daily.getCallInstance();
     if (existingInstance) {
       void existingInstance.destroy();
     }
 
-    let startVideoOff = !(options.enableCam == true)
-    let startAudioOff = options.enableMic == false
     this._daily = Daily.createCallObject({
+      startVideoOff: !(options.enableCam == true),
+      startAudioOff: options.enableMic == false,
       allowMultipleCallInstances: true,
-      startVideoOff: startVideoOff,
-      startAudioOff: startAudioOff,
       dailyConfig: {},
     });
 
     this.attachEventListeners();
+
+    this.state = "disconnected";
+
+    console.debug("[RTVI Transport] Initialized");
   }
 
   get state(): TransportState {
@@ -70,15 +77,15 @@ export class RNDailyTransport extends Transport {
   }
 
   async getAllCams() {
-    const { devices } = await this._daily.enumerateDevices();
+    const { devices } = await this._daily!.enumerateDevices();
     return devices.filter((d) => d.kind === "videoinput") as MediaDeviceInfo[];
   }
 
   updateCam(camId: string) {
-    this._daily
+    this._daily!
       .setCamera(camId)
       .then(async () => {
-        let inputDevices = await this._daily.getInputDevices()
+        let inputDevices = await this._daily!.getInputDevices()
         this._selectedCam = inputDevices.camera as MediaDeviceInfo;
       });
   }
@@ -88,15 +95,15 @@ export class RNDailyTransport extends Transport {
   }
 
   async getAllMics() {
-    const { devices } = await this._daily.enumerateDevices();
+    const { devices } = await this._daily!.enumerateDevices();
     return devices.filter((d) => d.kind === "audio") as MediaDeviceInfo[];
   }
 
   updateMic(micId: string) {
-    this._daily
+    this._daily!
       .setAudioDevice(micId)
       .then(async () => {
-        let inputDevices = await this._daily.getInputDevices()
+        let inputDevices = await this._daily!.getInputDevices()
         this._selectedMic = inputDevices.mic as MediaDeviceInfo;
       });
   }
@@ -106,19 +113,19 @@ export class RNDailyTransport extends Transport {
   }
 
   enableMic(enable: boolean) {
-    this._daily.setLocalAudio(enable);
+    this._daily!.setLocalAudio(enable);
   }
 
   get isMicEnabled() {
-    return this._daily.localAudio();
+    return this._daily!.localAudio();
   }
 
   enableCam(enable: boolean) {
-    this._daily.setLocalVideo(enable);
+    this._daily!.setLocalVideo(enable);
   }
 
   get isCamEnabled() {
-    return this._daily.localVideo();
+    return this._daily!.localVideo();
   }
 
   tracks() {
@@ -143,7 +150,9 @@ export class RNDailyTransport extends Transport {
   }
 
   async initDevices() {
-    if (this.state !== "idle") return;
+    if (!this._daily) {
+      throw new RTVIError("Transport instance not initialized");
+    }
 
     this.state = "initializing";
     await this._daily.startCamera();
@@ -173,8 +182,8 @@ export class RNDailyTransport extends Transport {
     authBundle: DailyTransportAuthBundle,
     abortController: AbortController
   ) {
-    if (this.state === "idle") {
-      await this.initDevices();
+    if (!this._daily) {
+      throw new RTVIError("Transport instance not initialized");
     }
 
     if (abortController.signal.aborted) return;
@@ -206,9 +215,10 @@ export class RNDailyTransport extends Transport {
   async sendReadyMessage(): Promise<void> {
     return new Promise<void>((resolve) => {
       (async () => {
-        this._daily.on("track-started", (ev) => {
+        this._daily!.on("track-started", (ev) => {
           if (!ev.participant?.local) {
-            this.sendMessage(VoiceMessage.clientReady());
+            this.state = "ready";
+            this.sendMessage(RTVIMessage.clientReady());
             resolve();
           }
         });
@@ -217,58 +227,54 @@ export class RNDailyTransport extends Transport {
   }
 
   private attachEventListeners() {
-    this._daily.on(
+    this._daily!.on(
       "available-devices-updated",
       this.handleAvailableDevicesUpdated.bind(this)
     );
 
-    this._daily.on(
+    this._daily!.on(
       // TODO, we need to add DailyEventObjectSelectedDevicesUpdated to types overrides inside react-ntive-daily-js
       // @ts-ignore
       "selected-devices-updated",
       this.handleSelectedDevicesUpdated.bind(this)
     );
 
-    this._daily.on("track-started", this.handleTrackStarted.bind(this));
-    this._daily.on("track-stopped", this.handleTrackStopped.bind(this));
-    this._daily.on(
+    this._daily!.on("track-started", this.handleTrackStarted.bind(this));
+    this._daily!.on("track-stopped", this.handleTrackStopped.bind(this));
+    this._daily!.on(
       "participant-joined",
       this.handleParticipantJoined.bind(this)
     );
-    this._daily.on("participant-left", this.handleParticipantLeft.bind(this));
-    this._daily.on("local-audio-level", this.handleLocalAudioLevel.bind(this));
-    this._daily.on(
+    this._daily!.on("participant-left", this.handleParticipantLeft.bind(this));
+    this._daily!.on("local-audio-level", this.handleLocalAudioLevel.bind(this));
+    this._daily!.on(
       "remote-participants-audio-level",
       this.handleRemoteAudioLevel.bind(this)
     );
-    this._daily.on("app-message", this.handleAppMessage.bind(this));
-    this._daily.on("left-meeting", this.handleLeftMeeting.bind(this));
+    this._daily!.on("app-message", this.handleAppMessage.bind(this));
+    this._daily!.on("left-meeting", this.handleLeftMeeting.bind(this));
   }
 
   async disconnect() {
-    this._daily.stopLocalAudioLevelObserver();
-    this._daily.stopRemoteParticipantsAudioLevelObserver();
+    this._daily!.stopLocalAudioLevelObserver();
+    this._daily!.stopRemoteParticipantsAudioLevelObserver();
 
-    await this._daily.leave();
-    await this._daily.destroy();
+    await this._daily!.leave();
+    await this._daily!.destroy();
   }
 
-  public sendMessage(message: VoiceMessage) {
-    this._daily.sendAppMessage(message, "*");
+  public sendMessage(message: RTVIMessage) {
+    this._daily!.sendAppMessage(message, "*");
   }
 
   private handleAppMessage(ev: DailyEventObjectAppMessage) {
-    // Bubble any messages with realtime-ai label
+    // Bubble any messages with rtvi-ai label
     if (ev.data.label === "rtvi-ai") {
       this._onMessage({
         id: ev.data.id,
         type: ev.data.type,
         data: ev.data.data,
-      } as VoiceMessage);
-    } else if (ev.data.type === "pipecat-metrics") {
-      // Bubble up pipecat metrics, which don't have the "rtvi-ai" label
-      const vmm = new VoiceMessageMetrics(ev.data.metrics as PipecatMetrics);
-      this._onMessage(vmm);
+      } as RTVIMessage);
     }
   }
 
@@ -343,7 +349,7 @@ export class RNDailyTransport extends Transport {
   private handleRemoteAudioLevel(
     ev: DailyEventObjectRemoteParticipantsAudioLevel
   ) {
-    const participants = this._daily.participants();
+    const participants = this._daily!.participants();
 
     for (const participantId in ev.participantsAudioLevel) {
       if (ev.participantsAudioLevel.hasOwnProperty(participantId)) {
