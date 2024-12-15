@@ -26,8 +26,8 @@ npm i react-native-get-random-values@^1.11.0
 
 If you are using Expo, you will also need to add the following dependencies:
 ```bash
-npm i @config-plugins/react-native-webrtc@^9.0.0
-npm i @daily-co/config-plugin-rn-daily-js@0.0.6
+npm i @config-plugins/react-native-webrtc@^10.0.0
+npm i @daily-co/config-plugin-rn-daily-js@0.0.7
 ```
 
 All the details about Expo can be found [here](https://github.com/daily-co/rn-daily-js-expo-config-plugin).
