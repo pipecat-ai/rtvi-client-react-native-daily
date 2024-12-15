@@ -17,7 +17,7 @@ Install `react-native-realtime-ai-daily` along with its peer dependencies:
 
 ```bash
 npm i react-native-realtime-ai-daily
-npm i @daily-co/react-native-daily-js@^0.68.0
+npm i @daily-co/react-native-daily-js@^0.70.0
 npm i @daily-co/react-native-webrtc@^118.0.3-daily.2
 npm i @react-native-async-storage/async-storage@^1.23.1
 npm i react-native-background-timer@^2.4.1
