@@ -9,8 +9,8 @@ import {
 
 import React, { useEffect, useState } from "react"
 
-import { DailyVoiceClient } from 'react-native-realtime-ai-daily'
-import { TransportState } from 'realtime-ai';
+import { DailyVoiceClient, RNDailyTransport } from 'react-native-realtime-ai-daily';
+import { RTVIClient, TransportState } from 'realtime-ai';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -50,55 +50,60 @@ export default function App() {
   const [voiceClient, setVoiceClient] = useState<DailyVoiceClient|undefined>()
 
   const [inCall, setInCall] = useState<boolean>(false)
-  const [currentState, setCurrentState] = useState<TransportState>("idle")
+  const [currentState, setCurrentState] = useState<TransportState>("disconnected")
 
   const createVoiceClient = () => {
-    let voiceClient = new DailyVoiceClient({
-      baseUrl: roomUrl,
+    return new RTVIClient({
+      transport: new RNDailyTransport(),
+      params: {
+        baseUrl: roomUrl,
+        config: [
+          {
+            service: "tts",
+            options: [
+              { name: "voice", value: "79a125e8-cd45-4c13-8a67-188112f4dd22" },
+            ],
+          },
+          {
+            service: "llm",
+            options: [
+              { name: "model", value: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo" },
+              {
+                name: "initial_messages",
+                value: [
+                  {
+                    role: "system",
+                    content:
+                      "You are a assistant called ExampleBot. You can ask me anything. Keep responses brief and legible. Your responses will converted to audio. Please do not include any special characters in your response other than '!' or '?'. Start by briefly introducing yourself.",
+                  },
+                ],
+              },
+              { name: "run_on_config", value: true },
+            ],
+          },
+        ],
+        // Note: In a production environment, it is recommended to avoid calling Daily's API endpoint directly.
+        // Instead, you should route requests through your own server to handle authentication, validation,
+        // and any other necessary logic. Therefore, the baseUrl should be set to the URL of your own server.
+        headers: new Headers({
+          "Authorization": `Bearer ${process.env.EXPO_PUBLIC_DAILY_API_KEY}`
+        }),
+        requestData: {
+          "bot_profile": "voice_2024_08",
+          "max_duration": 680,
+          services: {
+            llm: "together",
+            tts: "cartesia",
+          },
+        },
+        endpoints: {
+          connect: "/start",
+          action: "/action"
+        }
+      },
       enableMic: true,
-      services: {
-        llm: "together",
-        tts: "cartesia",
-      },
-      config: [
-        {
-          service: "tts",
-          options: [
-            { name: "voice", value: "79a125e8-cd45-4c13-8a67-188112f4dd22" },
-          ],
-        },
-        {
-          service: "llm",
-          options: [
-            { name: "model", value: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo" },
-            {
-              name: "initial_messages",
-              value: [
-                {
-                  role: "system",
-                  content:
-                    "You are a assistant called Frankie. You can ask me anything. Keep responses brief and legible. Introduce yourself first.",
-                },
-              ],
-            },
-            { name: "run_on_config", value: true },
-          ],
-        },
-      ],
-      // Note: In a production environment, it is recommended to avoid calling Daily's API endpoint directly.
-      // Instead, you should route requests through your own server to handle authentication, validation,
-      // and any other necessary logic. Therefore, the baseUrl should be set to the URL of your own server.
-      customHeaders: {
-        "Authorization": `Bearer ${process.env.EXPO_PUBLIC_DAILY_API_KEY}`
-      },
-      customBodyParams: {
-        "bot_profile": "voice_2024_08",
-        "max_duration": 680
-      },
-      timeout: 15 * 1000,
-      enableCam: false,
+      enableCam: false
     })
-    return voiceClient
   }
 
   const start = async () => {
