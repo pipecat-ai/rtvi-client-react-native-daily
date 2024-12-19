@@ -3,7 +3,7 @@
     "rootDir": ".",
     "paths": {
       "@pipecat-ai/react-native-daily-transport": ["./src/index"],
-      "realtime-ai": ["./src/types/realtime-ai/typeOverrides"]
+      "@pipecat-ai/client-js": ["./src/types/realtime-ai/typeOverrides"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
