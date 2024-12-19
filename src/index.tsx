@@ -1,4 +1,4 @@
-import { RTVIClient, RTVIClientOptions } from 'realtime-ai';
+import { RTVIClient, RTVIClientOptions } from '@pipecat-ai/client-js';
 import { RNDailyTransport } from "./transport";
 import VoiceClientVideoView from './view/VoiceClientVideoView';
 

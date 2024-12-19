@@ -1431,6 +1431,17 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@pipecat-ai/client-js@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@pipecat-ai/client-js/-/client-js-0.3.1.tgz#d2178d78f8db854b2410ebdcf308275a868195ef"
+  integrity sha512-qUcZKPXP4rYzEZcNDVtCDj6RhieTYutFgF0hnC/v6Jq1T2KY9XrKrrioXY5wO1MlWRo2CzUvLDFfKw/KOWS9yA==
+  dependencies:
+    "@types/events" "^3.0.3"
+    clone-deep "^4.0.1"
+    events "^3.3.0"
+    typed-emitter "^2.1.0"
+    uuid "^10.0.0"
+
 "@pkgr/core@^0.1.0":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.1.1.tgz#1ec17e2edbec25c8306d424ecfbf13c7de1aaa31"
@@ -5296,17 +5307,6 @@ readable-stream@~2.3.6:
     safe-buffer "~5.1.1"
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
-
-realtime-ai@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/realtime-ai/-/realtime-ai-0.2.0.tgz#d7aff7257bb924ea44aafbc6e6c04bb2a33024c7"
-  integrity sha512-lr+8X8zyZe8/2eL6gfK6FKEivBl6TjpSyE0JgaMi9N/2MbTltXO9wzsnd3SrlMHKojbjbx+xHe8AMbv3MlnVSg==
-  dependencies:
-    "@types/events" "^3.0.3"
-    clone-deep "^4.0.1"
-    events "^3.3.0"
-    typed-emitter "^2.1.0"
-    uuid "^10.0.0"
 
 redent@^4.0.0:
   version "4.0.0"

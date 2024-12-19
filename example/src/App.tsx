@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react"
 
 import { DailyVoiceClient, RNDailyTransport } from '@pipecat-ai/react-native-daily-transport';
-import { RTVIClient, TransportState } from 'realtime-ai';
+import { RTVIClient, TransportState } from '@pipecat-ai/client-js';
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -110,7 +110,7 @@ export default function App() {
     try {
       let voiceClient = createVoiceClient()
       setVoiceClient(voiceClient)
-      await voiceClient?.start()
+      await voiceClient?.connect()
     } catch (e) {
       console.log("Failed to start the bot", e)
     }

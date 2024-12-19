@@ -1,6 +1,6 @@
 {
   "name": "@pipecat-ai/react-native-daily-transport",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "BSD-2-Clause",
   "description": "React Native library for connecting to RTVI client using Daily",
   "source": "./src/index.tsx",
@@ -105,11 +105,11 @@
     ]
   },
   "dependencies": {
-    "realtime-ai": "^0.2.0"
+    "@pipecat-ai/client-js": "^0.3.1"
   },
   "peerDependencies": {
     "@daily-co/react-native-webrtc": "^118.0.3-daily.2",
-    "@daily-co/react-native-daily-js": "^0.68.0",
+    "@daily-co/react-native-daily-js": "^0.70.0",
     "@react-native-async-storage/async-storage": "^1.15.7",
     "react-native-get-random-values": "^1.11.0",
     "react-native-background-timer": "^2.3.1"
