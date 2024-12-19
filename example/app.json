@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-realtime-ai-daily-example",
-    "slug": "react-native-realtime-ai-daily-example",
+    "name": "@pipecat-ai/react-native-daily-example",
+    "slug": "pipecat-ai-react-native-daily-example",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -41,7 +41,12 @@
         "android.permission.MODIFY_AUDIO_SETTINGS",
         "android.permission.RECORD_AUDIO",
         "android.permission.SYSTEM_ALERT_WINDOW",
-        "android.permission.WAKE_LOCK"
+        "android.permission.WAKE_LOCK",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_CAMERA",
+        "android.permission.FOREGROUND_SERVICE_MICROPHONE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION",
+        "android.permission.POST_NOTIFICATIONS"
       ]
     },
     "web": {
@@ -55,12 +60,12 @@
         {
           "android": {
             "minSdkVersion": 24,
-            "compileSdkVersion": 34,
-            "targetSdkVersion": 34,
-            "buildToolsVersion": "34.0.0"
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0"
           },
           "ios": {
-            "deploymentTarget": "13.4"
+            "deploymentTarget": "15.1"
           }
         }
       ]

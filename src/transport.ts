@@ -19,7 +19,7 @@ import {
   RTVIClientOptions,
   RTVIMessage,
   RTVIError,
-} from "realtime-ai";
+} from "@pipecat-ai/client-js";
 import { MediaDeviceInfo } from '@daily-co/react-native-webrtc';
 
 export interface DailyTransportAuthBundle {
@@ -34,6 +34,7 @@ export class RNDailyTransport extends Transport {
   private _botId: string = "";
   private _selectedCam: MediaDeviceInfo | Record<string, never> = {};
   private _selectedMic: MediaDeviceInfo | Record<string, never> = {};
+  private _selectedSpeaker: MediaDeviceInfo | Record<string, never> = {};
 
   constructor() {
     super();
@@ -110,6 +111,24 @@ export class RNDailyTransport extends Transport {
 
   get selectedMic() {
     return this._selectedMic;
+  }
+
+  async getAllSpeakers() {
+    const { devices } = await this._daily!.enumerateDevices();
+    return devices.filter((d) => d.kind === "audio");
+  }
+
+  updateSpeaker(speakerId: string) {
+    this._daily
+      ?.setAudioDevice(speakerId)
+      .then(async () => {
+        const devicesInUse = await this._daily!.getInputDevices();
+        this._selectedSpeaker = devicesInUse?.speaker;
+      });
+  }
+
+  get selectedSpeaker() {
+    return this._selectedSpeaker;
   }
 
   enableMic(enable: boolean) {

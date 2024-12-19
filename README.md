@@ -13,10 +13,10 @@ This package introduces some constraints on what OS/SDK versions your project ca
 
 ## Installation
 
-Install `react-native-realtime-ai-daily` along with its peer dependencies:
+Install `@pipecat-ai/react-native-daily-transport` along with its peer dependencies:
 
 ```bash
-npm i react-native-realtime-ai-daily
+npm i @pipecat-ai/react-native-daily-transport
 npm i @daily-co/react-native-daily-js@^0.70.0
 npm i @daily-co/react-native-webrtc@^118.0.3-daily.2
 npm i @react-native-async-storage/async-storage@^1.23.1
