@@ -9,7 +9,7 @@ import {
 
 import React, { useEffect, useState } from "react"
 
-import { DailyVoiceClient, RNDailyTransport } from '@pipecat-ai/react-native-daily-transport';
+import { RNDailyTransport } from '@pipecat-ai/react-native-daily-transport';
 import { RTVIClient, TransportState } from '@pipecat-ai/client-js';
 
 const styles = StyleSheet.create({
@@ -47,7 +47,7 @@ export default function App() {
 
   const [roomUrl, setRoomUrl] = useState<string>(process.env.EXPO_PUBLIC_BASE_URL || '')
 
-  const [voiceClient, setVoiceClient] = useState<DailyVoiceClient|undefined>()
+  const [voiceClient, setVoiceClient] = useState<RTVIClient|undefined>()
 
   const [inCall, setInCall] = useState<boolean>(false)
   const [currentState, setCurrentState] = useState<TransportState>("disconnected")
