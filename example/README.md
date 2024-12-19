@@ -1,4 +1,4 @@
-# react-native-realtime-ai-daily-example
+# @pipecat-ai/react-native-daily-example
 
 ## Usage
 

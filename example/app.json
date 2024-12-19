@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-realtime-ai-daily-example",
-    "slug": "react-native-realtime-ai-daily-example",
+    "name": "@pipecat-ai/react-native-daily-example",
+    "slug": "pipecat-ai-react-native-daily-example",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

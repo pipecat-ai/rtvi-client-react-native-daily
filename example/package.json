@@ -1,5 +1,5 @@
 {
-  "name": "react-native-realtime-ai-daily-example",
+  "name": "@pipecat-ai/react-native-daily-example",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start --dev-client",

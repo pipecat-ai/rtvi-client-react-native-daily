@@ -9,7 +9,7 @@ import {
 
 import React, { useEffect, useState } from "react"
 
-import { DailyVoiceClient, RNDailyTransport } from 'react-native-realtime-ai-daily';
+import { DailyVoiceClient, RNDailyTransport } from '@pipecat-ai/react-native-daily-transport';
 import { RTVIClient, TransportState } from 'realtime-ai';
 
 const styles = StyleSheet.create({

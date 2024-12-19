@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-realtime-ai-daily": ["./src/index"],
+      "@pipecat-ai/react-native-daily-transport": ["./src/index"],
       "realtime-ai": ["./src/types/realtime-ai/typeOverrides"]
     },
     "allowUnreachableCode": false,
