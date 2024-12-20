@@ -5,11 +5,7 @@
 [![Docs](https://img.shields.io/badge/documentation-blue)](https://docs.pipecat.ai/client/introduction)
 ![NPM Version](https://img.shields.io/npm/v/@pipecat-ai/react-native-daily-transport)
 
-The official React Native client SDK for [Pipecat](https://github.com/pipecat-ai/pipecat), an open source Python framework for building voice and multimodal AI applications.
-
-## Overview
-
-This library exports a `RNDailyTransport` that has the [Daily](https://www.daily.co/) transport associated.
+The Pipecat client React Native Transport library exports a `RNDailyTransport` that has the [Daily](https://www.daily.co/) transport associated.
 
 To connect to a bot, you will need both this SDK and the [`@pipecat-client/client-js`](https://www.npmjs.com/package/@pipecat-ai/client-js) to create an `RTVIClient`.
 
