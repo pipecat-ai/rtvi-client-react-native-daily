@@ -1,8 +1,13 @@
-# Daily Real-Time Voice Inference React Native SDK
+<h1><div align="center">
+ <img alt="pipecat client react native" width="500px" height="auto" src="https://raw.githubusercontent.com/pipecat-ai/pipecat-client-react-native-daily-transport/main/pipecat-react-native.png">
+</div></h1>
 
-[RTVI-AI](https://github.com/rtvi-ai/) is an open standard for Real-Time Voice [and Video] Inference.
+[![Docs](https://img.shields.io/badge/documentation-blue)](https://docs.pipecat.ai/client/introduction)
+![NPM Version](https://img.shields.io/npm/v/@pipecat-ai/react-native-daily-transport)
 
-This library exports a VoiceClient that has the [Daily](https://www.daily.co/) transport associated.
+The Pipecat client React Native Transport library exports a `RNDailyTransport` that has the [Daily](https://www.daily.co/) transport associated.
+
+To connect to a bot, you will need both this SDK and the [`@pipecat-client/client-js`](https://www.npmjs.com/package/@pipecat-ai/client-js) to create an `RTVIClient`.
 
 ## Minimum OS/SDK versions
 
@@ -36,7 +41,7 @@ A full demo can be found [here](https://github.com/daily-demos/daily-bots-react-
 
 ## Quick Start
 
-Instantiate a `VoiceClient` instance, wire up the bot's audio, and start the conversation:
+Instantiate an `RTVIClient` instance, wire up the bot's audio, and start the conversation:
 
 ```typescript
 let voiceClient = new RTVIClient({
@@ -86,10 +91,36 @@ let voiceClient = new RTVIClient({
 await voiceClient.start()
 ```
 
-## References
-- [RTVI-AI overview](https://github.com/rtvi-ai/).
-- [RTVI-AI reference docs](https://rtvi.mintlify.app/api-reference/introduction).
+## Documentation
+
+Pipecat Client React Native implements a client instance that:
+
+- Facilitates requests to an endpoint you create.
+- Dispatches single-turn actions to a HTTP bot service when disconnected.
+- Provides methods that handle the connectivity state and realtime interaction with your bot service.
+- Manages media transport (such as audio and video).
+- Provides callbacks and events for handling bot messages and actions.
+- Optionally configures your AI services and pipeline.
+
+Docs and API reference can be found at https://docs.pipecat.ai/client/introduction.
 
 ## Contributing
 
-We are welcoming contributions to this project in form of issues and pull request. For questions about RTVI head over to the [Pipecat discord server](https://discord.gg/pipecat) and check the [#rtvi](https://discord.com/channels/1239284677165056021/1265086477964935218) channel.
+We welcome contributions from the community! Whether you're fixing bugs, improving documentation, or adding new features, here's how you can help:
+
+- **Found a bug?** Open an [issue](https://github.com/pipecat-ai/pipecat-client-react-native-daily-transport/issues)
+- **Have a feature idea?** Start a [discussion](https://discord.gg/pipecat)
+- **Want to contribute code?** Check our [CONTRIBUTING.md](CONTRIBUTING.md) guide
+- **Documentation improvements?** [Docs](https://github.com/pipecat-ai/docs) PRs are always welcome
+
+Before submitting a pull request, please check existing issues and PRs to avoid duplicates.
+
+We aim to review all contributions promptly and provide constructive feedback to help get your changes merged.
+
+## Getting help
+
+➡️ [Join our Discord](https://discord.gg/pipecat)
+
+➡️ [Read the docs](https://docs.pipecat.ai)
+
+➡️ [Reach us on X](https://x.com/pipecat_ai)
